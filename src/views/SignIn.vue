@@ -25,6 +25,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import { actionTypes as authActionTypes } from '@/store/modules/auth';
+
 export default {
   data() {
     return {
@@ -48,50 +51,67 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', [authActionTypes.LOGIN]),
+
     login() {
-      console.log('sending email and password');
+      this[authActionTypes.LOGIN]({
+        email: this.email,
+        password: this.password,
+      }).then(() => {
+        this.$toast.open({
+          message: 'Signed in successfully',
+          type: 'is-success',
+        });
+        this.$router.push('/');
+      }).catch((error) => {
+        this.$toast.open({
+          message: error.response.data.error,
+          type: 'is-danger',
+        });
+      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .fade-enter-active, .fade-leave-active {
-    transition: all 2s;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-    transform: translateX(20px);
+.fade-enter-active, .fade-leave-active {
+  transition: all 2s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.sign-in {
+  left: 50%;
+  max-width: 400px;
+  padding: 30px;
+  position: absolute;
+  transform: translate(-50%, calc(-50% - 10px));
+  top: 50%;
+  width: 100%;
+
+  .subtitle {
+    color: #fff;
+    font-size: 35px;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
-  .sign-in {
-    left: 50%;
-    max-width: 400px;
-    padding: 30px;
-    position: absolute;
-    transform: translate(-50%, calc(-50% - 10px));
-    top: 50%;
-    width: 100%;
+  /deep/ .notification {
+    margin-bottom: 12px;
+    padding: 1rem 1.25rem 1rem 1.25rem;
 
-    .subtitle {
-      color: #fff;
-      font-size: 35px;
-      margin-bottom: 10px;
+    .media {
       text-align: center;
-    }
 
-    /deep/ .notification {
-      margin-bottom: 12px;
-      padding: 1rem 1.25rem 1rem 1.25rem;
-
-      .media {
+      .media-content {
+        font-size: 1rem;
         text-align: center;
-
-        .media-content {
-          font-size: 1rem;
-          text-align: center;
-        }
       }
     }
   }
+}
 </style>
