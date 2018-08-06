@@ -5,7 +5,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import { actionTypes as authActionTypes } from '@/store/modules/auth';
+
 export default {
+  mounted() {
+    this[authActionTypes.GET_CURRENT_USER]();
+  },
+
+  methods: {
+    ...mapActions('auth', [authActionTypes.GET_CURRENT_USER]),
+  },
 };
 </script>
 
