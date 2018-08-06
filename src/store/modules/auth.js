@@ -20,16 +20,15 @@ export default {
 
   state: {
     currentUser: null,
-    jwt: window.localStorage.getItem('jwt'),
-  },
-
-  getters: {
-    jwt: state => state.jwt,
   },
 
   actions: {
     [actionTypes.SIGN_IN]({ commit }, { email, password }) {
       return axiosInstance.post(endpoints.SIGN_IN, { user: { email, password } })
+        .then(({ data }) => {
+          const currentUser = dataFormatter.deserialize(data);
+          commit(mutationTypes.SET_CURRENT_USER, currentUser);
+        });
     },
 
     [actionTypes.GET_CURRENT_USER]({ commit }) {

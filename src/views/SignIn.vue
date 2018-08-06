@@ -63,11 +63,6 @@ export default {
           type: 'is-success',
         });
         this.$router.push('/');
-      }).catch((error) => {
-        this.$toast.open({
-          message: error.response.data.error,
-          type: 'is-danger',
-        });
       });
     },
   },
