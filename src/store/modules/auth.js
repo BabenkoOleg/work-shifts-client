@@ -1,11 +1,14 @@
 import axiosInstance from '../axios-instance';
 
+export const endpoints = {
+  SIGN_IN: '/auth/sign-in',
+};
+
 export const actionTypes = {
-  LOGIN: 'LOGIN',
+  SIGN_IN: 'SIGN_IN',
 };
 
 export const mutationTypes = {
-  SET_JWT: 'SET_JWT',
 };
 
 export default {
@@ -21,9 +24,8 @@ export default {
   },
 
   actions: {
-    // login
-    [actionTypes.LOGIN]({ commit }, { email, password }) {
-      return axiosInstance.post('/auth/sign-in', { user: { email, password } })
+    [actionTypes.SIGN_IN]({ commit }, { email, password }) {
+      return axiosInstance.post(endpoints.SIGN_IN, { user: { email, password } })
         .then(({ data: { jwt } }) => {
           commit(mutationTypes.SET_JWT, jwt);
         });
@@ -31,10 +33,5 @@ export default {
   },
 
   mutations: {
-    // set jwt
-    [mutationTypes.SET_JWT](state, jwt) {
-      window.localStorage.setItem('jwt', jwt);
-      state.jwt = jwt;
-    },
   },
 };

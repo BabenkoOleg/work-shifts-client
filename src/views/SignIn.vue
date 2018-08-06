@@ -1,6 +1,6 @@
 <template>
   <div class="sign-in">
-    <form class="sign-in" @submit.prevent="login">
+    <form class="sign-in" @submit.prevent="signIn">
       <transition name="fade">
         <h3 v-if="showSiteName" class="subtitle">Work Shifts</h3>
       </transition>
@@ -51,10 +51,10 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', [authActionTypes.LOGIN]),
+    ...mapActions('auth', [authActionTypes.SIGN_IN]),
 
-    login() {
-      this[authActionTypes.LOGIN]({
+    signIn() {
+      this[authActionTypes.SIGN_IN]({
         email: this.email,
         password: this.password,
       }).then(() => {
