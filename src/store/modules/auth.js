@@ -26,9 +26,6 @@ export default {
   actions: {
     [actionTypes.SIGN_IN]({ commit }, { email, password }) {
       return axiosInstance.post(endpoints.SIGN_IN, { user: { email, password } })
-        .then(({ data: { jwt } }) => {
-          commit(mutationTypes.SET_JWT, jwt);
-        });
     },
   },
 
