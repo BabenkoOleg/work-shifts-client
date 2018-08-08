@@ -1,19 +1,41 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" :class="{ 'app-preloading': preloading || preloadingError }">
+    <div class="app-preloader" v-if="preloading">
+      <app-preloader></app-preloader>
+    </div>
+    <div class="app-error" v-else-if="preloadingError">
+      <p>{{ preloadingError }}</p>
+    </div>
+    <template v-else>
+      <router-view/>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
+import AppPreloader from '@/components/AppPreloader.vue';
 
 export default {
+  components: {
+    AppPreloader,
+  },
+
+  computed: {
+    ...mapState('app', ['preloading', 'preloadingError']),
+  },
+
   mounted() {
-    this[authActionTypes.GET_CURRENT_USER]();
+    // look at the loading xD
+    setTimeout(() => {
+      this[appActionTypes.GET_INIT_DATA]();
+    }, 500);
   },
 
   methods: {
+    ...mapActions('app', [appActionTypes.GET_INIT_DATA]),
     ...mapActions('auth', [authActionTypes.GET_CURRENT_USER]),
   },
 };
@@ -21,13 +43,36 @@ export default {
 
 <style lang="scss">
 html,
-body {
+body,
+#app {
   height: 100%;
 }
 
+
 body {
   &.sign-in {
-    background-color: #242424;
+    background-color: #1f1f1f;
+  }
+}
+
+#app {
+  &.app-preloading {
+    background: #1f1f1f;
+
+    .app-error,
+    .app-preloader {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, calc(-50% - 25px));
+      top: 50%;
+    }
+
+    .app-error {
+      color: #c3c3c3;
+      font-size: 35px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
   }
 }
 </style>
