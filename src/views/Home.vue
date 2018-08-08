@@ -16,13 +16,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
   name: 'home',
+
   computed: {
-    ...mapGetters('auth', ['currentUser']),
+    ...mapState('auth', ['currentUser']),
   },
 
   methods: {
