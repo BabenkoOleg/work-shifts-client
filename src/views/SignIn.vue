@@ -12,6 +12,14 @@
         <b-input v-model="password" placeholder="Password" type="password" icon="lock" required>
         </b-input>
       </b-field>
+      <b-checkbox v-model="rememberMe"
+                  class="remember-me"
+                  size="is-small"
+                  type="is-success"
+                  true-value="1"
+                  false-value="0">
+        Remember me
+      </b-checkbox>
       <b-field>
         <button class="button is-success is-fullwidth">
           Sign In
@@ -31,6 +39,7 @@ export default {
       showSiteName: false,
       email: '',
       password: '',
+      rememberMe: 0,
       invalid: false,
     };
   },
@@ -54,12 +63,13 @@ export default {
       this[authActionTypes.SIGN_IN]({
         email: this.email,
         password: this.password,
+        rememberMe: this.rememberMe,
       }).then(() => {
         this.$toast.open({
           message: 'Signed in successfully',
           type: 'is-success',
         });
-        this.$router.push('/');
+        this.$router.push({ name: 'home' });
       }).catch((error) => {
         this.$toast.open({
           message: error.response.data.error,
@@ -96,6 +106,16 @@ export default {
     font-weight: 600;
     margin-bottom: 10px;
     text-align: center;
+  }
+
+  /deep/ .remember-me {
+    margin-bottom: 15px;
+
+    .control-label {
+      color: #b5b5b5;
+      font-size: 14px;
+      line-height: 14px;
+    }
   }
 }
 </style>

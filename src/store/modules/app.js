@@ -29,7 +29,6 @@ export default {
             });
         })
         .catch((error) => {
-          console.log(error);
           commit(mutationTypes.SET_PRELOADING_ERROR, error);
           commit(mutationTypes.SET_PRELOADING, false);
         });

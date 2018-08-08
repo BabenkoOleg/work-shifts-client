@@ -27,8 +27,12 @@ export default {
   },
 
   actions: {
-    [actionTypes.SIGN_IN]({ commit }, { email, password }) {
-      return axiosInstance.post(endpoints.SIGN_IN, { user: { email, password } })
+    [actionTypes.SIGN_IN]({ commit }, { email, password, rememberMe }) {
+      return axiosInstance.post(endpoints.SIGN_IN, {
+        user: {
+          email, password, remember_me: rememberMe,
+        },
+      })
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
@@ -39,7 +43,7 @@ export default {
     [actionTypes.SIGN_OUT]({ commit }) {
       return axiosInstance.delete(endpoints.SIGN_OUT)
         .then(() => {
-          commit(mutationTypes.SET_CURRENT_USER, null)
+          commit(mutationTypes.SET_CURRENT_USER, null);
           commit(mutationTypes.SET_AUTHORIZED, false);
         });
     },
@@ -62,6 +66,7 @@ export default {
     [mutationTypes.SET_CURRENT_USER](state, currentUser) {
       state.currentUser = currentUser;
     },
+
     [mutationTypes.SET_AUTHORIZED](state, payload) {
       state.authorized = payload;
       localStorage.setItem('authorized', payload);
