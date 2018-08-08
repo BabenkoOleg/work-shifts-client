@@ -12,9 +12,6 @@
         <b-input v-model="password" placeholder="Password" type="password" icon="lock" required>
         </b-input>
       </b-field>
-      <b-notification v-if="invalid" type="is-danger" :closable="false">
-        Email/Password is incorrect
-      </b-notification>
       <b-field>
         <button class="button is-success is-fullwidth">
           Sign In
@@ -63,6 +60,11 @@ export default {
           type: 'is-success',
         });
         this.$router.push('/');
+      }).catch((error) => {
+        this.$toast.open({
+          message: error.response.data.error,
+          type: 'is-danger',
+        });
       });
     },
   },
@@ -91,22 +93,9 @@ export default {
   .subtitle {
     color: #fff;
     font-size: 35px;
+    font-weight: 600;
     margin-bottom: 10px;
     text-align: center;
-  }
-
-  /deep/ .notification {
-    margin-bottom: 12px;
-    padding: 1rem 1.25rem 1rem 1.25rem;
-
-    .media {
-      text-align: center;
-
-      .media-content {
-        font-size: 1rem;
-        text-align: center;
-      }
-    }
   }
 }
 </style>
