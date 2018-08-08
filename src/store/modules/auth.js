@@ -15,6 +15,7 @@ export const actionTypes = {
 
 export const mutationTypes = {
   SET_CURRENT_USER: 'SET_CURRENT_USER',
+  SET_AUTHORIZED: 'SET_AUTHORIZED',
 };
 
 export default {
@@ -22,10 +23,7 @@ export default {
 
   state: {
     currentUser: null,
-  },
-
-  getters: {
-    currentUser: state => state.currentUser,
+    authorized: localStorage.getItem('authorized') === 'true' || false,
   },
 
   actions: {
@@ -34,12 +32,16 @@ export default {
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
+          commit(mutationTypes.SET_AUTHORIZED, true);
         });
     },
 
     [actionTypes.SIGN_OUT]({ commit }) {
       return axiosInstance.delete(endpoints.SIGN_OUT)
-        .then(() => commit(mutationTypes.SET_CURRENT_USER, null));
+        .then(() => {
+          commit(mutationTypes.SET_CURRENT_USER, null)
+          commit(mutationTypes.SET_AUTHORIZED, false);
+        });
     },
 
     [actionTypes.GET_CURRENT_USER]({ commit }) {
@@ -47,6 +49,11 @@ export default {
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
+          commit(mutationTypes.SET_AUTHORIZED, true);
+        })
+        .catch(() => {
+          commit(mutationTypes.SET_CURRENT_USER, null);
+          commit(mutationTypes.SET_AUTHORIZED, false);
         });
     },
   },
@@ -54,6 +61,10 @@ export default {
   mutations: {
     [mutationTypes.SET_CURRENT_USER](state, currentUser) {
       state.currentUser = currentUser;
+    },
+    [mutationTypes.SET_AUTHORIZED](state, payload) {
+      state.authorized = payload;
+      localStorage.setItem('authorized', payload);
     },
   },
 };
