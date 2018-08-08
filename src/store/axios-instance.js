@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Toast, Snackbar } from 'buefy';
+import { Snackbar } from 'buefy';
 
 const axiosInstance = axios.create({
   baseURL: '/api/',
@@ -14,12 +14,7 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 axiosInstance.interceptors.response.use(response => response, (error) => {
-  if (error.response.status < 500) {
-    Toast.open({
-      message: error.response.data.error,
-      type: 'is-danger',
-    });
-  } else if (error.response.status >= 500) {
+  if (error.response.status >= 500) {
     let errorMessage;
 
     if (process.env.NODE_ENV === 'production') {
@@ -36,6 +31,10 @@ axiosInstance.interceptors.response.use(response => response, (error) => {
       actionText: 'Ok',
       queue: false,
     });
+
+    error.response.data = {
+      error: `${error.response.statusText} [${error.response.status}]`,
+    };
   }
 
   return Promise.reject(error);
