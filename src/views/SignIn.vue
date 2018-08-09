@@ -39,7 +39,7 @@ export default {
       showSiteName: false,
       email: '',
       password: '',
-      rememberMe: 0,
+      rememberMe: '0',
       invalid: false,
     };
   },
@@ -52,7 +52,7 @@ export default {
     this.showSiteName = true;
     if (this.rememberedEmail) {
       this.email = this.rememberedEmail;
-      this.rememberMe = 1;
+      this.rememberMe = '1';
     }
   },
 
