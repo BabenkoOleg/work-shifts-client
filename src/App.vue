@@ -1,14 +1,6 @@
 <template>
-  <div id="app" :class="{ 'app-preloading': preloading || preloadingError }">
-    <div class="app-preloader" v-if="preloading">
-      <app-preloader></app-preloader>
-    </div>
-    <div class="app-error" v-else-if="preloadingError">
-      <p>{{ preloadingError }}</p>
-    </div>
-    <template v-else>
-      <router-view/>
-    </template>
+  <div id="app">
+    <router-view/>
   </div>
 </template>
 
