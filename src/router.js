@@ -9,19 +9,11 @@ import store from './store';
 Vue.use(Router);
 
 const ifNotAuthenticated = (to, from, next) => {
-  if (!store.state.auth.authorized) {
-    next();
-  } else {
-    next({ name: 'home' });
-  }
+  store.state.auth.currentUser ? next({ name: 'home' }) : next();
 };
 
 const ifAuthenticated = (to, from, next) => {
-  if (store.state.auth.authorized) {
-    next();
-  } else {
-    next({ name: 'signIn' });
-  }
+  store.state.auth.currentUser ? next() : next({ name: 'signIn' });
 };
 
 export default new Router({

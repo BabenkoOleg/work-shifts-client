@@ -15,15 +15,16 @@ export const actionTypes = {
 
 export const mutationTypes = {
   SET_CURRENT_USER: 'SET_CURRENT_USER',
-  SET_AUTHORIZED: 'SET_AUTHORIZED',
 };
+
+const currentUserKey = () => `${window.location.host.split('.')[0]}CurrentUser`;
+
 
 export default {
   namespaced: true,
 
   state: {
-    currentUser: null,
-    authorized: localStorage.getItem('authorized') === 'true' || false,
+    currentUser: JSON.parse(localStorage.getItem(currentUserKey())) || null,
   },
 
   actions: {
@@ -36,16 +37,12 @@ export default {
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
-          commit(mutationTypes.SET_AUTHORIZED, true);
         });
     },
 
     [actionTypes.SIGN_OUT]({ commit }) {
       return axiosInstance.delete(endpoints.SIGN_OUT)
-        .then(() => {
-          commit(mutationTypes.SET_CURRENT_USER, null);
-          commit(mutationTypes.SET_AUTHORIZED, false);
-        });
+        .then(() => commit(mutationTypes.SET_CURRENT_USER, null));
     },
 
     [actionTypes.GET_CURRENT_USER]({ commit }) {
@@ -53,11 +50,10 @@ export default {
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
-          commit(mutationTypes.SET_AUTHORIZED, true);
         })
-        .catch(() => {
+        .catch((error) => {
           commit(mutationTypes.SET_CURRENT_USER, null);
-          commit(mutationTypes.SET_AUTHORIZED, false);
+          return Promise.reject(error);
         });
     },
   },
@@ -65,11 +61,11 @@ export default {
   mutations: {
     [mutationTypes.SET_CURRENT_USER](state, currentUser) {
       state.currentUser = currentUser;
-    },
-
-    [mutationTypes.SET_AUTHORIZED](state, payload) {
-      state.authorized = payload;
-      localStorage.setItem('authorized', payload);
+      if (currentUser) {
+        localStorage.setItem(currentUserKey(), JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem(currentUserKey());
+      }
     },
   },
 };

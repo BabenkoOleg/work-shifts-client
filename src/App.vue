@@ -1,6 +1,13 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div id="app" :class="{ 'app-preloading': preloading }">
+      <div class="app-preloader" v-if="preloading">
+        <app-preloader></app-preloader>
+      </div>
+      <template v-else>
+        <router-view/>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -11,24 +18,37 @@ import { actionTypes as authActionTypes } from '@/store/modules/auth';
 import AppPreloader from '@/components/AppPreloader.vue';
 
 export default {
+  data() {
+    return {
+      preloading: true,
+    };
+  },
+
   components: {
     AppPreloader,
   },
 
   computed: {
-    ...mapState('app', ['preloading', 'preloadingError']),
+    ...mapState('auth', ['currentUser']),
   },
 
   mounted() {
-    // look at the loading xD
-    setTimeout(() => {
-      this[appActionTypes.GET_INIT_DATA]();
-    }, 500);
+    this.checkCurrentUser();
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.GET_INIT_DATA]),
     ...mapActions('auth', [authActionTypes.GET_CURRENT_USER]),
+
+    checkCurrentUser() {
+      this[authActionTypes.GET_CURRENT_USER]()
+        .then(() => {
+          if (this.$router.currentRoute.name === 'signIn') {
+            this.$router.push({ name: 'home' });
+          }
+        })
+        .catch(() => this.$router.push({ name: 'signIn' }))
+        .finally(() => this.preloading = false);
+    },
   },
 };
 </script>
