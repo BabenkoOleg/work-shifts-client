@@ -13,7 +13,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 import AppPreloader from '@/components/AppPreloader.vue';
 
@@ -46,8 +45,12 @@ export default {
             this.$router.push({ name: 'home' });
           }
         })
-        .catch(() => this.$router.push({ name: 'signIn' }))
-        .finally(() => this.preloading = false);
+        .catch(() => {
+          this.$router.push({ name: 'signIn' });
+        })
+        .finally(() => {
+          this.preloading = false;
+        });
     },
   },
 };
