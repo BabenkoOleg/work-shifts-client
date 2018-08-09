@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -50,10 +50,18 @@ export default {
 
   mounted() {
     this.showSiteName = true;
+    if (this.rememberedEmail) {
+      this.email = this.rememberedEmail;
+      this.rememberMe = 1;
+    }
   },
 
   destroyed() {
     document.body.classList.remove('sign-in');
+  },
+
+  computed: {
+    ...mapState('auth', ['rememberedEmail']),
   },
 
   methods: {

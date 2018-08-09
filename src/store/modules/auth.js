@@ -15,16 +15,19 @@ export const actionTypes = {
 
 export const mutationTypes = {
   SET_CURRENT_USER: 'SET_CURRENT_USER',
+  CLEAR_CURRENT_USER: 'CLEAR_CURRENT_USER',
+  SET_REMEMBERED_EMAIL: 'SET_REMEMBERED_EMAIL',
+  CLEAR_REMEMBERED_EMAIL: 'CLEAR_REMEMBERED_EMAIL',
 };
 
-const currentUserKey = () => `${window.location.host.split('.')[0]}CurrentUser`;
-
+const subdomain = () => window.location.host.split('.')[0];
 
 export default {
   namespaced: true,
 
   state: {
-    currentUser: JSON.parse(localStorage.getItem(currentUserKey())) || null,
+    currentUser: JSON.parse(localStorage.getItem(`${subdomain()}CurrentUser`)) || null,
+    rememberedEmail: localStorage.getItem(`${subdomain()}RememberedEmail`) || null,
   },
 
   actions: {
@@ -37,12 +40,17 @@ export default {
         .then(({ data }) => {
           const currentUser = dataFormatter.deserialize(data);
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
+          if (rememberMe === '1') {
+            commit(mutationTypes.SET_REMEMBERED_EMAIL, email);
+          } else {
+            commit(mutationTypes.CLEAR_REMEMBERED_EMAIL);
+          }
         });
     },
 
     [actionTypes.SIGN_OUT]({ commit }) {
       return axiosInstance.delete(endpoints.SIGN_OUT)
-        .then(() => commit(mutationTypes.SET_CURRENT_USER, null));
+        .then(() => commit(mutationTypes.CLEAR_CURRENT_USER));
     },
 
     [actionTypes.GET_CURRENT_USER]({ commit }) {
@@ -52,7 +60,7 @@ export default {
           commit(mutationTypes.SET_CURRENT_USER, currentUser);
         })
         .catch((error) => {
-          commit(mutationTypes.SET_CURRENT_USER, null);
+          commit(mutationTypes.CLEAR_CURRENT_USER);
           return Promise.reject(error);
         });
     },
@@ -61,11 +69,22 @@ export default {
   mutations: {
     [mutationTypes.SET_CURRENT_USER](state, currentUser) {
       state.currentUser = currentUser;
-      if (currentUser) {
-        localStorage.setItem(currentUserKey(), JSON.stringify(currentUser));
-      } else {
-        localStorage.removeItem(currentUserKey());
-      }
+      localStorage.setItem(`${subdomain()}CurrentUser`, JSON.stringify(currentUser));
+    },
+
+    [mutationTypes.CLEAR_CURRENT_USER](state) {
+      state.currentUser = null;
+      localStorage.removeItem(`${subdomain()}CurrentUser`);
+    },
+
+    [mutationTypes.SET_REMEMBERED_EMAIL](state, rememberedEmail) {
+      state.rememberedEmail = rememberedEmail;
+      localStorage.setItem(`${subdomain()}RememberedEmail`, rememberedEmail);
+    },
+
+    [mutationTypes.CLEAR_REMEMBERED_EMAIL](state) {
+      state.rememberedEmail = null;
+      localStorage.removeItem(`${subdomain()}RememberedEmail`);
     },
   },
 };
