@@ -15,7 +15,7 @@ export default {
 
   mounted() {
     document.body.classList.remove('preloading');
-    // this.checkCurrentUser();
+    this.checkCurrentUser();
   },
 
   methods: {
@@ -27,8 +27,12 @@ export default {
           if (this.$router.currentRoute.name === 'signIn') {
             this.$router.push({ name: 'home' });
           }
+        })
+        .catch(() => {
+          if (!['signIn', 'forgotPassword'].includes(this.$router.currentRoute.name)) {
+            this.$router.push({ name: 'signIn' })
+          }
         });
-        // .catch(() => this.$router.push({ name: 'signIn' }));
     },
   },
 };
