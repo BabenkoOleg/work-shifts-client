@@ -57,13 +57,13 @@ export default {
   }
 
   /deep/ .auth-nav-link {
-    margin-top: 5px;
+    margin-top: 10px;
     text-align: center;
 
     a {
       color: #b5b5b5;
-      font-size: 14px;
-      line-height: 14px;
+      font-size: 15px;
+      line-height: 15px;
 
       &:hover {
         color: #e2e2e2;
