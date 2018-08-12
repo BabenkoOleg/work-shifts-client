@@ -1,9 +1,6 @@
 <template>
   <div class="sign-in">
-    <form class="sign-in" @submit.prevent="signIn">
-      <transition name="fade">
-        <h3 v-if="showSiteName" class="subtitle">Work Shifts</h3>
-      </transition>
+    <form @submit.prevent="signIn">
       <b-field>
         <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
         </b-input>
@@ -26,6 +23,9 @@
         </button>
       </b-field>
     </form>
+    <div class="auth-nav-link">
+      <router-link to="forgot-password">Forgot password?</router-link>
+    </div>
   </div>
 </template>
 
@@ -36,7 +36,6 @@ import { actionTypes as authActionTypes } from '@/store/modules/auth';
 export default {
   data() {
     return {
-      showSiteName: false,
       email: '',
       password: '',
       rememberMe: '0',
@@ -44,20 +43,11 @@ export default {
     };
   },
 
-  created() {
-    document.body.classList.add('sign-in');
-  },
-
   mounted() {
-    this.showSiteName = true;
     if (this.rememberedEmail) {
       this.email = this.rememberedEmail;
       this.rememberMe = '1';
     }
-  },
-
-  destroyed() {
-    document.body.classList.remove('sign-in');
   },
 
   computed: {
@@ -83,6 +73,7 @@ export default {
           message: error.response.data.error,
           type: 'is-danger',
         });
+        this.password = '';
       });
     },
   },
@@ -90,32 +81,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: all 2s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
 .sign-in {
-  left: 50%;
-  max-width: 400px;
-  padding: 30px;
-  position: absolute;
-  transform: translate(-50%, calc(-50% - 10px));
-  top: 50%;
-  width: 100%;
-
-  .subtitle {
-    color: #fff;
-    font-size: 35px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
   /deep/ .remember-me {
     margin-bottom: 15px;
 

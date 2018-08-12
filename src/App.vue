@@ -15,7 +15,7 @@ export default {
 
   mounted() {
     document.body.classList.remove('preloading');
-    this.checkCurrentUser();
+    // this.checkCurrentUser();
   },
 
   methods: {
@@ -27,8 +27,8 @@ export default {
           if (this.$router.currentRoute.name === 'signIn') {
             this.$router.push({ name: 'home' });
           }
-        })
-        .catch(() => this.$router.push({ name: 'signIn' }));
+        });
+        // .catch(() => this.$router.push({ name: 'signIn' }));
     },
   },
 };
@@ -42,7 +42,7 @@ body,
 }
 
 body {
-  &.sign-in {
+  &.auth {
     background-color: #1f1f1f;
   }
 }

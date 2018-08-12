@@ -20,14 +20,12 @@ export const mutationTypes = {
   CLEAR_REMEMBERED_EMAIL: 'CLEAR_REMEMBERED_EMAIL',
 };
 
-const subdomain = () => window.location.host.split('.')[0];
-
 export default {
   namespaced: true,
 
   state: {
-    currentUser: JSON.parse(localStorage.getItem(`${subdomain()}CurrentUser`)) || null,
-    rememberedEmail: localStorage.getItem(`${subdomain()}RememberedEmail`) || null,
+    currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
+    rememberedEmail: localStorage.getItem('rememberedEmail') || null,
   },
 
   actions: {
@@ -69,22 +67,22 @@ export default {
   mutations: {
     [mutationTypes.SET_CURRENT_USER](state, currentUser) {
       state.currentUser = currentUser;
-      localStorage.setItem(`${subdomain()}CurrentUser`, JSON.stringify(currentUser));
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
     },
 
     [mutationTypes.CLEAR_CURRENT_USER](state) {
       state.currentUser = null;
-      localStorage.removeItem(`${subdomain()}CurrentUser`);
+      localStorage.removeItem('currentUser');
     },
 
     [mutationTypes.SET_REMEMBERED_EMAIL](state, rememberedEmail) {
       state.rememberedEmail = rememberedEmail;
-      localStorage.setItem(`${subdomain()}RememberedEmail`, rememberedEmail);
+      localStorage.setItem('rememberedEmail', rememberedEmail);
     },
 
     [mutationTypes.CLEAR_REMEMBERED_EMAIL](state) {
       state.rememberedEmail = null;
-      localStorage.removeItem(`${subdomain()}RememberedEmail`);
+      localStorage.removeItem('rememberedEmail');
     },
   },
 };
