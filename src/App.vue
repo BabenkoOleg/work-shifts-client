@@ -29,7 +29,8 @@ export default {
           }
         })
         .catch(() => {
-          if (!['signIn', 'forgotPassword'].includes(this.$router.currentRoute.name)) {
+          const routes = ['signIn', 'forgotPassword', 'resetPassword'];
+          if (!routes.includes(this.$router.currentRoute.name)) {
             this.$router.push({ name: 'signIn' });
           }
         });

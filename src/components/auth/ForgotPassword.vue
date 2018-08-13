@@ -45,54 +45,15 @@ export default {
     ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
 
     sendResetPasswordInstructions() {
-      this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({ email: this.email })
-        .then(({ data: { message } }) => {
-          this[snackbarActionTypes.SHOW_SUCCESS]({ message });
-          this.$router.push({ name: 'signIn' });
-        })
-        .catch((error) => {
-          this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-        });
+      this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({
+        email: this.email,
+      }).then(({ data: { message } }) => {
+        this[snackbarActionTypes.SHOW_SUCCESS]({ message });
+        this.$router.push({ name: 'signIn' });
+      }).catch((error) => {
+        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
+      });
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
-  transition: all 2s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
-.sign-in {
-  left: 50%;
-  max-width: 400px;
-  padding: 30px;
-  position: absolute;
-  transform: translate(-50%, calc(-50% - 10px));
-  top: 50%;
-  width: 100%;
-
-  .subtitle {
-    color: #fff;
-    font-size: 35px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-
-  /deep/ .remember-me {
-    margin-bottom: 15px;
-
-    .control-label {
-      color: #b5b5b5;
-      font-size: 14px;
-      line-height: 14px;
-    }
-  }
-}
-</style>

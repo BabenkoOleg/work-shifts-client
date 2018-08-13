@@ -13,6 +13,7 @@ export const actionTypes = {
   SIGN_OUT: 'SIGN_OUT',
   GET_CURRENT_USER: 'GET_CURRENT_USER',
   SEND_RESET_PASSWORD_INSTRUCTIONS: 'SEND_RESET_PASSWORD_INSTRUCTIONS',
+  RESET_PASSWORD: 'RESET_PASSWORD',
 };
 
 export const mutationTypes = {
@@ -36,16 +37,15 @@ export default {
         user: {
           email, password, remember_me: rememberMe,
         },
-      })
-        .then(({ data }) => {
-          const currentUser = dataFormatter.deserialize(data);
-          commit(mutationTypes.SET_CURRENT_USER, currentUser);
-          if (rememberMe === '1') {
-            commit(mutationTypes.SET_REMEMBERED_EMAIL, email);
-          } else {
-            commit(mutationTypes.CLEAR_REMEMBERED_EMAIL);
-          }
-        });
+      }).then(({ data }) => {
+        const currentUser = dataFormatter.deserialize(data);
+        commit(mutationTypes.SET_CURRENT_USER, currentUser);
+        if (rememberMe === '1') {
+          commit(mutationTypes.SET_REMEMBERED_EMAIL, email);
+        } else {
+          commit(mutationTypes.CLEAR_REMEMBERED_EMAIL);
+        }
+      });
     },
 
     [actionTypes.SIGN_OUT]({ commit }) {
@@ -56,8 +56,7 @@ export default {
     [actionTypes.GET_CURRENT_USER]({ commit }) {
       return axiosInstance.get(endpoints.CURRENT_USER)
         .then(({ data }) => {
-          const currentUser = dataFormatter.deserialize(data);
-          commit(mutationTypes.SET_CURRENT_USER, currentUser);
+          commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
         })
         .catch((error) => {
           commit(mutationTypes.CLEAR_CURRENT_USER);
@@ -67,6 +66,18 @@ export default {
 
     [actionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({}, { email }) {
       return axiosInstance.post(endpoints.PASSWORD, { user: { email } });
+    },
+
+    [actionTypes.RESET_PASSWORD]({ commit }, { token, password, passwordConfirmation }) {
+      return axiosInstance.put(endpoints.PASSWORD, {
+        password: {
+          reset_password_token: token,
+          password,
+          password_confirmation: passwordConfirmation,
+        },
+      }).then(({ data }) => {
+        commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
+      });
     },
   },
 

@@ -6,6 +6,7 @@ import Home from '@/views/Home.vue';
 import Auth from '@/views/Auth.vue';
 import SignIn from '@/components/auth/SignIn.vue';
 import ForgotPassword from '@/components/auth/ForgotPassword.vue';
+import ResetPassword from '@/components/auth/ResetPassword.vue';
 
 import store from './store';
 
@@ -40,14 +41,14 @@ export default new Router({
           component: SignIn,
         },
         {
-          path: '/password/new',
+          path: '/forgot-password',
           name: 'forgotPassword',
           component: ForgotPassword,
         },
         {
-          path: '/password/edit',
-          name: 'editPassword',
-          component: ForgotPassword,
+          path: '/reset-password',
+          name: 'resetPassword',
+          component: ResetPassword,
         },
       ],
     },
