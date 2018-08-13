@@ -24,7 +24,7 @@
       </b-field>
     </form>
     <div class="auth-nav-link">
-      <router-link to="forgot-password">Forgot password?</router-link>
+      <router-link :to="{ name: 'forgotPassword' }">Forgot password?</router-link>
     </div>
   </div>
 </template>

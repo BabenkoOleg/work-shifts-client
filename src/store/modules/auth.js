@@ -5,12 +5,14 @@ export const endpoints = {
   SIGN_IN: '/auth/sign-in',
   SIGN_OUT: '/auth/sign-out',
   CURRENT_USER: '/auth/current-user',
+  PASSWORD: '/auth/password',
 };
 
 export const actionTypes = {
   SIGN_IN: 'SIGN_IN',
   SIGN_OUT: 'SIGN_OUT',
   GET_CURRENT_USER: 'GET_CURRENT_USER',
+  SEND_RESET_PASSWORD_INSTRUCTIONS: 'SEND_RESET_PASSWORD_INSTRUCTIONS',
 };
 
 export const mutationTypes = {
@@ -61,6 +63,10 @@ export default {
           commit(mutationTypes.CLEAR_CURRENT_USER);
           return Promise.reject(error);
         });
+    },
+
+    [actionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({}, { email }) {
+      return axiosInstance.post(endpoints.PASSWORD, { user: { email } });
     },
   },
 

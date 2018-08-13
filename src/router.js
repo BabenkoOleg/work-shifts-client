@@ -40,8 +40,13 @@ export default new Router({
           component: SignIn,
         },
         {
-          path: '/forgot-password',
+          path: '/password/new',
           name: 'forgotPassword',
+          component: ForgotPassword,
+        },
+        {
+          path: '/password/edit',
+          name: 'editPassword',
           component: ForgotPassword,
         },
       ],

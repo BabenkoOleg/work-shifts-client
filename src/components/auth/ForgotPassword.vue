@@ -1,18 +1,18 @@
 <template>
   <div class="forgot-password">
-    <form @submit.prevent="signIn">
+    <form @submit.prevent="sendResetPasswordInstructions">
       <b-field>
         <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
         </b-input>
       </b-field>
       <b-field>
         <button class="button is-success is-fullwidth">
-          Send instructions
+          Send Instructions
         </button>
       </b-field>
     </form>
     <div class="auth-nav-link">
-      <router-link to="sign-in">Sign In</router-link>
+      <router-link :to="{ name: 'signIn' }">Sign In</router-link>
     </div>
   </div>
 </template>
@@ -40,6 +40,25 @@ export default {
   },
 
   methods: {
+    ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
+
+    sendResetPasswordInstructions() {
+      this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({ email: this.email })
+        .then(({ data: { message } }) => {
+          this.$toast.open({
+            message: message,
+            type: 'is-success',
+            duration: 50000,
+          });
+          this.$router.push({ name: 'signIn' });
+        })
+        .catch((error) => {
+          this.$toast.open({
+            message: error.response.data.error,
+            type: 'is-danger',
+          });
+        });
+    },
   },
 };
 </script>

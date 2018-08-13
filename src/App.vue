@@ -30,7 +30,7 @@ export default {
         })
         .catch(() => {
           if (!['signIn', 'forgotPassword'].includes(this.$router.currentRoute.name)) {
-            this.$router.push({ name: 'signIn' })
+            this.$router.push({ name: 'signIn' });
           }
         });
     },
