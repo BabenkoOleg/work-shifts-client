@@ -1,5 +1,5 @@
 <template>
-  <div class="forgot-password">
+  <div class="auth-form">
     <form @submit.prevent="sendResetPasswordInstructions">
       <b-field>
         <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
@@ -19,6 +19,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -40,23 +41,17 @@ export default {
   },
 
   methods: {
+    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERROR]),
     ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
 
     sendResetPasswordInstructions() {
       this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({ email: this.email })
         .then(({ data: { message } }) => {
-          this.$toast.open({
-            message: message,
-            type: 'is-success',
-            duration: 50000,
-          });
+          this[snackbarActionTypes.SHOW_SUCCESS]({ message });
           this.$router.push({ name: 'signIn' });
         })
         .catch((error) => {
-          this.$toast.open({
-            message: error.response.data.error,
-            type: 'is-danger',
-          });
+          this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
         });
     },
   },

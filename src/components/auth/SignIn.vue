@@ -1,5 +1,5 @@
 <template>
-  <div class="sign-in">
+  <div class="auth-form">
     <form @submit.prevent="signIn">
       <b-field>
         <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
@@ -9,14 +9,16 @@
         <b-input v-model="password" placeholder="Password" type="password" icon="lock" required>
         </b-input>
       </b-field>
-      <b-checkbox v-model="rememberMe"
-                  class="remember-me"
-                  size="is-small"
-                  type="is-success"
-                  true-value="1"
-                  false-value="0">
-        Remember me
-      </b-checkbox>
+      <div class="remember-me-field">
+        <b-checkbox v-model="rememberMe"
+                    class="remember-me"
+                    size="is-small"
+                    type="is-success"
+                    true-value="1"
+                    false-value="0">
+          Remember me
+        </b-checkbox>
+      </div>
       <b-field>
         <button class="button is-success is-fullwidth">
           Sign In
@@ -31,6 +33,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -55,6 +58,7 @@ export default {
   },
 
   methods: {
+    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERROR]),
     ...mapActions('auth', [authActionTypes.SIGN_IN]),
 
     signIn() {
@@ -63,16 +67,10 @@ export default {
         password: this.password,
         rememberMe: this.rememberMe,
       }).then(() => {
-        this.$toast.open({
-          message: 'Signed in successfully',
-          type: 'is-success',
-        });
+        this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Signed in successfully!' });
         this.$router.push({ name: 'home' });
       }).catch((error) => {
-        this.$toast.open({
-          message: error.response.data.error,
-          type: 'is-danger',
-        });
+        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
         this.password = '';
       });
     },
@@ -81,9 +79,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sign-in {
+.remember-me-field {
+  margin-bottom: 15px;
+
   /deep/ .remember-me {
-    margin-bottom: 15px;
+    &:hover .control-label {
+      color: #e2e2e2;
+    }
 
     .control-label {
       color: #b5b5b5;
