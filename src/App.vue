@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <router-view/>
+    <b-loading :active.sync="isLoading"></b-loading>
   </div>
 </template>
 
@@ -10,6 +11,7 @@ import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
   computed: {
+    ...mapState('app', ['isLoading']),
     ...mapState('auth', ['currentUser']),
   },
 
@@ -81,6 +83,12 @@ body,
 body {
   &.auth {
     background-color: #1f1f1f;
+
+    .loading-overlay {
+      .loading-background {
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
   }
 }
 

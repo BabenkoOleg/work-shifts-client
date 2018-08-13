@@ -19,6 +19,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
@@ -41,10 +42,12 @@ export default {
   },
 
   methods: {
+    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
     ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERROR]),
     ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
 
     sendResetPasswordInstructions() {
+      this[appActionTypes.START_LOADING]();
       this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({
         email: this.email,
       }).then(({ data: { message } }) => {
@@ -52,7 +55,9 @@ export default {
         this.$router.push({ name: 'signIn' });
       }).catch((error) => {
         this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-      });
+      }).finally(() => {
+        this[appActionTypes.STOP_LOADING]();
+      });;
     },
   },
 };
