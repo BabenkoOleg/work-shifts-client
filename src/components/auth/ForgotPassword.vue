@@ -57,7 +57,7 @@ export default {
         this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
-      });;
+      });
     },
   },
 };

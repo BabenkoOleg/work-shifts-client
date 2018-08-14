@@ -76,7 +76,7 @@ export default {
         this.password = '';
       }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
-      });;
+      });
     },
   },
 };
