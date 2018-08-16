@@ -2,11 +2,11 @@
   <div class="auth-form">
     <form @submit.prevent="sendResetPasswordInstructions">
       <b-field>
-        <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
+        <b-input required v-model="email" placeholder="Email" icon="email">
         </b-input>
       </b-field>
       <b-field>
-        <button class="button is-success is-fullwidth">
+        <button class="button is-success is-fullwidth" :disabled="isButtonDisabled">
           Send Instructions
         </button>
       </b-field>
@@ -31,14 +31,15 @@ export default {
   },
 
   mounted() {
-    if (this.rememberedEmail) {
-      this.email = this.rememberedEmail;
-      this.rememberMe = '1';
-    }
+    if (this.rememberedEmail) this.email = this.rememberedEmail;
   },
 
   computed: {
     ...mapState('auth', ['rememberedEmail']),
+
+    isButtonDisabled() {
+      return this.email === '';
+    },
   },
 
   methods: {

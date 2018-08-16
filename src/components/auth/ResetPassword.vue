@@ -18,7 +18,7 @@
         </b-input>
       </b-field>
       <b-field>
-        <button class="button is-success is-fullwidth">
+        <button class="button is-success is-fullwidth" :disabled="isButtonDisabled">
           Reset Password
         </button>
       </b-field>
@@ -42,6 +42,12 @@ export default {
       passwordConfirmation: '',
       token: this.$route.query.token,
     };
+  },
+
+  computed: {
+    isButtonDisabled() {
+      return this.password === '' || this.passwordConfirmation === '';
+    },
   },
 
   methods: {

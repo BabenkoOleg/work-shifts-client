@@ -90,6 +90,12 @@ body {
       }
     }
   }
+
+  .field {
+    .help.is-danger {
+      display: none;
+    }
+  }
 }
 
 .notices {

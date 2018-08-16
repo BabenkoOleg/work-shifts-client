@@ -2,7 +2,7 @@
   <div class="auth-form">
     <form @submit.prevent="signIn">
       <b-field>
-        <b-input required v-model="email" placeholder="Email" :type="email" icon="email">
+        <b-input v-model="email" placeholder="Email" icon="email" required>
         </b-input>
       </b-field>
       <b-field>
@@ -20,7 +20,7 @@
         </b-checkbox>
       </div>
       <b-field>
-        <button class="button is-success is-fullwidth">
+        <button class="button is-success is-fullwidth" :disabled="isButtonDisabled">
           Sign In
         </button>
       </b-field>
@@ -55,6 +55,10 @@ export default {
 
   computed: {
     ...mapState('auth', ['rememberedEmail']),
+
+    isButtonDisabled() {
+      return this.email === '' || this.password === '';
+    },
   },
 
   methods: {
@@ -73,7 +77,6 @@ export default {
         this.$router.push({ name: 'home' });
       }).catch((error) => {
         this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-        this.password = '';
       }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
       });
