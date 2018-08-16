@@ -11,17 +11,12 @@
           <button class="button is-success" @click="toAdminPanel">Admin Panel</button>
         </div>
       </div>
-      <div class="columns is-mobile is-centered">
-        <div class="column is-half">
-          <button class="button is-danger" @click="signOut">Sign Out</button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -32,17 +27,9 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', [authActionTypes.SIGN_OUT]),
-
     // ToDo: remove it
     toAdminPanel() {
       window.location.pathname = '/admin';
-    },
-
-    signOut() {
-      this[authActionTypes.SIGN_OUT]().then(() => {
-        this.$router.push({ name: 'signIn' });
-      });
     },
   },
 };

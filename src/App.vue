@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <app-header v-if="currentUser"></app-header>
     <router-view/>
     <b-loading :active.sync="isLoading"></b-loading>
   </div>
@@ -7,12 +8,17 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import AppHeader from '@/components/AppHeader.vue';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
   computed: {
     ...mapState('app', ['isLoading']),
     ...mapState('auth', ['currentUser']),
+  },
+
+  components: {
+    AppHeader,
   },
 
   mounted() {
@@ -42,7 +48,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 @import "~bulma/sass/utilities/_all";
 
 // Set your colors
@@ -81,6 +86,8 @@ body,
 }
 
 body {
+  background-color: #f7f9fb;
+
   &.auth {
     background-color: #1f1f1f;
 
