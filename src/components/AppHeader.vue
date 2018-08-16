@@ -1,6 +1,11 @@
 <template>
   <div class="header">
     <nav class="navbar">
+      <div class="navbar-brand">
+        <router-link class="navbar-item" :to="{ name: 'home' }">
+          WorkShifts | {{currentUser.business.name}}
+        </router-link>
+      </div>
       <div class="navbar-menu">
         <div class="navbar-end">
           <b-dropdown position="is-bottom-left">
@@ -50,7 +55,7 @@ export default {
       window.location.pathname = '/admin';
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -59,6 +64,7 @@ export default {
 
   .navbar {
     background-color: #3d4852;
+    padding-left: 10px;
     padding-right: 10px;
 
     .navbar-item {
@@ -70,7 +76,7 @@ export default {
       }
 
       &:hover {
-        background-color: #4e5d69;
+        background-color: #343a40;
       }
     }
 
