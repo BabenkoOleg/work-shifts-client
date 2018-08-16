@@ -8,7 +8,7 @@
               <span class="user-name">{{currentUser.name || currentUser.email}}</span>
               <b-icon icon="account"></b-icon>
             </a>
-            <b-dropdown-item v-if="currentUser.role === 'administrator'">
+            <b-dropdown-item v-if="currentUser.role === 'administrator'" @click="goToAdminPanel">
               <b-icon icon="account-settings-variant"></b-icon>
               <span class="dropdown-item-label">Admin Panel</span>
             </b-dropdown-item>
@@ -19,7 +19,7 @@
             </b-dropdown-item>
             <b-dropdown-item @click="signOut">
               <b-icon icon="logout"></b-icon>
-              <span class="dropdown-item-label">Logout</span>
+              <span class="dropdown-item-label">Sign Out</span>
             </b-dropdown-item>
           </b-dropdown>
         </div>
@@ -44,6 +44,10 @@ export default {
       this[authActionTypes.SIGN_OUT]().then(() => {
         this.$router.push({ name: 'signIn' });
       });
+    },
+
+    goToAdminPanel() {
+      window.location.pathname = '/admin';
     },
   },
 }
