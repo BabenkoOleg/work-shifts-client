@@ -23,7 +23,7 @@
             <b-icon icon="account"></b-icon>
           </div>
           <hr>
-          <div class="navbar-item">
+          <div class="navbar-item" @click="goToAdminPanel">
             <span class="navbar-item-label">Admin Panel</span>
             <b-icon icon="account-settings-variant"></b-icon>
           </div>
@@ -31,7 +31,7 @@
             <span class="navbar-item-label">Settings</span>
             <b-icon icon="settings"></b-icon>
           </div>
-          <div class="navbar-item">
+          <div class="navbar-item" @click="signOut">
             <span class="navbar-item-label">Sign Out</span>
             <b-icon icon="logout"></b-icon>
           </div>
@@ -63,14 +63,14 @@ export default {
       this.isMenuActive = !this.isMenuActive;
     },
 
+    goToAdminPanel() {
+      window.location.pathname = '/admin';
+    },
+
     signOut() {
       this[authActionTypes.SIGN_OUT]().then(() => {
         this.$router.push({ name: 'signIn' });
       });
-    },
-
-    goToAdminPanel() {
-      window.location.pathname = '/admin';
     },
   },
 };
