@@ -18,23 +18,23 @@
       </div>
       <div class="navbar-menu" :class="{ 'is-active': isMenuActive }">
         <div class="navbar-end">
-          <navbar-item class="navbar-item user-name">
+          <div class="navbar-item user-name">
             <span class="navbar-item-label">{{currentUser.name || currentUser.email}}</span>
             <b-icon icon="account"></b-icon>
-          </navbar-item>
+          </div>
           <hr>
-          <navbar-item class="navbar-item">
+          <div class="navbar-item">
             <span class="navbar-item-label">Admin Panel</span>
             <b-icon icon="account-settings-variant"></b-icon>
-          </navbar-item>
-          <navbar-item class="navbar-item">
+          </div>
+          <div class="navbar-item">
             <span class="navbar-item-label">Settings</span>
             <b-icon icon="settings"></b-icon>
-          </navbar-item>
-          <navbar-item class="navbar-item">
+          </div>
+          <div class="navbar-item">
             <span class="navbar-item-label">Sign Out</span>
             <b-icon icon="logout"></b-icon>
-          </navbar-item>
+          </div>
         </div>
       </div>
     </nav>
