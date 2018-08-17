@@ -79,6 +79,8 @@ export default {
 <style lang="scss" scoped>
 .header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  width: 100%;
 
   .navbar {
     background-color: #3d4852;
