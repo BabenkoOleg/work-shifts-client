@@ -110,7 +110,6 @@ body {
     font-size: 0.95em;
     font-weight: bold;
     line-height: 1em;
-    min-height: 2.5em;
 
     &.is-success {
       background: #3ab54a;
@@ -124,6 +123,14 @@ body {
 
     .text {
       text-align: center;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .notices {
+    .snackbar {
+      min-height: 52px;
     }
   }
 }
