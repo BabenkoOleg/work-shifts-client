@@ -131,4 +131,46 @@ export default {
     }
   }
 }
+
+@media (max-width: 1024px) {
+  .header {
+    .navbar {
+      background-color: #3d4852;
+      padding-left: 0;
+      padding-right: 0;
+
+      .navbar-brand {
+        .navbar-item {
+          &.navbar-item-logo {
+            font-size: 16px;
+            padding: 10px 16px;
+          }
+        }
+      }
+
+      .navbar-menu {
+        .navbar-end {
+          .navbar-item {
+            background-color: #fff;
+            color: #484848;
+            flex-direction: row-reverse;
+            font-size: 16px;
+            justify-content: flex-end;
+            padding: 10px 16px;
+
+            .icon {
+              margin-left: 0;
+              margin-right: 8px;
+            }
+          }
+
+          hr {
+            display: inherit;
+            margin: 8px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>
