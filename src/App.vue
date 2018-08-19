@@ -98,7 +98,7 @@ body {
 
     .content-wrapper {
       height: 100%;
-      padding: 30px 16px 20px 16px;
+      padding: 32px 22px;
       overflow: scroll;
     }
   }

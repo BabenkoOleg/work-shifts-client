@@ -1,6 +1,8 @@
 <template>
   <div class="dashboard-page">
-    <calendar></calendar>
+    <div class="calendar">
+      <calendar></calendar>
+    </div>
   </div>
 </template>
 
@@ -15,4 +17,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.calendar {
+  width: 70%;
+}
+
+@media (max-width: 767px) {
+  .calendar {
+    width: 100%;
+  }
+}
 </style>

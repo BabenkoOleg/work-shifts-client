@@ -97,6 +97,7 @@ export default {
 
 <style lang="scss" scoped>
 .calendar-wrapper {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
   h3, p {
@@ -209,28 +210,6 @@ export default {
   }
 }
 
-@media (max-width: 767px) {
-  .calendar-wrapper {
-    .calendar-header {
-      background: #fff;
-
-      .header-title {
-        color: #4a4a4a;
-        font-size: 16px;
-      }
-
-      .previous-month,
-      .next-month {
-        color: #4a4a4a;
-
-        &:hover {
-          color: #1b1b1b;
-        }
-      }
-    }
-  }
-}
-
 @media screen and (min-width: 768px) {
   .calendar-wrapper {
     .date-number {
@@ -239,30 +218,44 @@ export default {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .calendar-wrapper {
     .calendar-header {
-      & > div {
+      background: #fff;
+
+      .header-title {
+        color: #4a4a4a;
+        font-size: 16px;
         padding: 10px 15px;
       }
-    }
-  }
 
-  .calendar-weeks {
-    .item {
-      line-height: 60px;
-    }
-  }
+      .previous-month,
+      .next-month {
+        color: #4a4a4a;
+        padding: 10px 15px;
 
-  .calendar-days {
-    .item {
-      line-height: 42px;
-
-      .date-number {
-        line-height: 42px;
+        &:hover,
+        &:active {
+          color: #1b1b1b;
+        }
       }
     }
 
+    .calendar-weeks {
+      .item {
+        line-height: 60px;
+      }
+    }
+
+    .calendar-days {
+      .item {
+        line-height: 42px;
+
+        .date-number {
+          line-height: 42px;
+        }
+      }
+    }
   }
 }
 </style>
