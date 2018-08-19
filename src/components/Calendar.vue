@@ -48,7 +48,8 @@ export default {
     regenerateDays() {
       const daysList = [];
       const firstDay = new Date(this.currentYear, this.currentMonth - 1, 1);
-      const dayOfWeek = firstDay.getDay() - 1;
+      let dayOfWeek = firstDay.getDay() - 1;
+      if (dayOfWeek <= -1) dayOfWeek = 6;
 
       const startDate = new Date(firstDay);
       startDate.setDate(firstDay.getDate() - dayOfWeek);
