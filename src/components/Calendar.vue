@@ -4,20 +4,19 @@
       <div class="previous-month" @click="changeMonth('backward')">
         <b-icon icon="chevron-left"></b-icon>
       </div>
-      <div class="title">{{currentMonth}}/{{currentYear}}</div>
+      <div class="header-title">{{currentMonth}}/{{currentYear}}</div>
       <div class="next-month" @click="changeMonth('forward')">
         <b-icon icon="chevron-right"></b-icon>
       </div>
     </div>
-    <div class="calendar-body">
-      <div class="weeks">
-        <span v-for="(day, i) in daysOfWeek" class="item" :key="i">{{daysOfWeek[i]}}</span>
-      </div>
-      <div class="dates" >
-      <div v-for="(day, i) in days" class="item" :key="i" :class="[day.classes]">
-        <p class="date-num">{{day.day}}</p>
-      </div>
+    <div class="calendar-weeks">
+      <span v-for="(day, i) in daysOfWeek" class="item" :key="i">{{daysOfWeek[i]}}</span>
     </div>
+    <div class="calendar-days">
+      <div v-for="(day, i) in days" class="item" :key="i" :class="[day.classes]">
+        <p class="date-number">{{day.day}}</p>
+        <span v-if="day.isToday" class="today"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -63,11 +62,11 @@ export default {
         const day = {
           date: this.formattedDate(date),
           day: date.getDate(),
+          isToday: this.formattedDate(date) === formattedToday,
           classes: [],
           events: [],
         };
 
-        if (this.formattedDate(date) === formattedToday) day.classes.push('today');
         if (date.getMonth() + 1 === this.currentMonth) day.classes.push('current-month');
 
         daysList.push(day);
@@ -100,7 +99,6 @@ $base-orange: #f29543;
 $white: #ffffff;
 $gray: #e0e0e0;
 $gray-dark: #b1b1b1;
-$large-padding: 15px;
 
 @media screen and (min-width: 768px) {
   .calendar-wrapper{
@@ -115,113 +113,113 @@ $large-padding: 15px;
   }
 }
 
-.calendar-wrapper{
-  .calendar-header{
-    position: relative;
-    width: 100%;
-    background-color: $white;
-    // box-shadow: 0 6px 5px rgba(0,0,0,.1);
-    font-weight: 500;
-    overflow: hidden;
-    padding-bottom: 10px;
-    &>div{
-      float: left;
-      line-height: 20px;
-      padding: $large-padding;
-    }
-    .title{
-      width: 60%;
-      text-align: center;
-    }
-    .previous-month {
-      text-align: left;
-      width: 20%;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
-    .next-month{
-      text-align: right;
-      width: 20%;
-      cursor: pointer;
-      user-select: none;
-      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
-  }
-  .calendar-body{
-    width: 100%;
-    .weeks{
-      width: 100%;
-      overflow: hidden;
-      text-align: center;
-      font-size: 1rem;
-      .item{
-        line-height: 50px;
-        float: left;
-        width: 14.285%;
-      }
-    }
-    .dates{
-      width: 100%;
-      overflow: hidden;
-      text-align: center;
-      font-size: 1rem;
-      .item{
-        position: relative;
-        float: left;
-        display: block;
-        width: 14.285%;
-        cursor: default;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-        .date-num{
-          font-size: 1rem;
-          position: relative;
-          z-index: 3;
-        }
-        &.event{
-          cursor: pointer;
-        }
-        &.selected-day{
-          .is-event{
-            background-color: $base-orange;
-          }
-        }
-        .is-event{
-          content: '';
-          border: 1px solid $base-orange;
-          background-color: #fff;
-          border-radius: 50%;
-          width: 36px;
-          height: 36px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          z-index: 1;
-          margin-left: -18px;
-          margin-top: -19px;
-        }
-        .is-today{
-          content: '';
-          background-color: $base-orange;
-          border-radius: 50%;
-          opacity: .8;
-          width: 12px;
-          height: 4px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          z-index: 2;
-          margin-left: -6px;
-          margin-top: 8px;
-        }
-      }
-    }
-  }
+.calendar-wrapper {
   h3, p {
     margin: 0;
     padding: 0;
   }
+
+  .calendar-header {
+    background-color: #3d4852;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    width: 100%;
+
+    & > div {
+      float: left;
+      line-height: 20px;
+      padding: 15px;
+    }
+
+    .header-title {
+      color: #dedede;
+      font-size: 18px;
+      margin-bottom: 0;
+      text-align: center;
+      width: 60%;
+    }
+
+    .previous-month,
+    .next-month {
+      color: #dedede;
+      cursor: pointer;
+      user-select: none;
+      width: 20%;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    .previous-month {
+      text-align: left;
+    }
+
+    .next-month{
+      text-align: right;
+    }
   }
 
+  .calendar-weeks {
+    background: #fff;
+    font-size: 16px;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+  }
 
+  .item {
+    line-height: 50px;
+    float: left;
+    user-select: none;
+    width: 14.285%;
+  }
+
+  .calendar-days {
+    background: #fff;
+    font-size: 16px;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+
+    .item {
+      position: relative;
+
+      &.current-month {
+        &:hover {
+          background: #f7f9fb;
+          cursor: pointer;
+        }
+      }
+
+      &:not(.current-month) {
+        color: #bebebe;
+      }
+
+      .date-number {
+        font-size: 16px;
+        position: relative;
+        z-index: 3;
+      }
+
+      .today {
+        content: '';
+        border: 1px solid #f29543;
+        border-radius: 50%;
+        height: 36px;
+        left: 50%;
+        position: absolute;
+        margin-left: -18px;
+        margin-top: -19px;
+        top: 50%;
+        width: 36px;
+        z-index: 1;
+      }
+    }
+  }
+}
 </style>
