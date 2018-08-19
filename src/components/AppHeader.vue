@@ -81,6 +81,7 @@ export default {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   position: fixed;
   width: 100%;
+  z-index: 1000;
 
   .navbar {
     background-color: #3d4852;
@@ -173,6 +174,12 @@ export default {
         }
       }
     }
+  }
+}
+
+@media (max-width: 767px) {
+  .header {
+    box-shadow: none;
   }
 }
 </style>

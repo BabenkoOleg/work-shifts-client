@@ -74,7 +74,7 @@ export default {
         rememberMe: this.rememberMe,
       }).then(() => {
         this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Signed in successfully!' });
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
         this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       }).finally(() => {

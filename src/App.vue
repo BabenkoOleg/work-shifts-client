@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <app-header v-if="currentUser"></app-header>
-    <router-view/>
+    <div class="main-container">
+      <div class="content-wrapper">
+        <router-view></router-view>
+      </div>
+    </div>
     <b-loading :active.sync="isLoading"></b-loading>
   </div>
 </template>
@@ -88,8 +92,29 @@ body,
 body {
   background-color: #f7f9fb;
 
+  .main-container {
+    height: 100%;
+    padding-top: 53px;
+
+    .content-wrapper {
+      height: 100%;
+      padding: 30px 16px 20px 16px;
+      overflow: scroll;
+    }
+  }
+
   &.auth {
     background-color: #1f1f1f;
+
+    .main-container {
+      height: 100%;
+      padding-top: 0;
+
+      .content-wrapper {
+        height: 100%;
+        overflow: unset;
+      }
+    }
 
     .loading-overlay {
       .loading-background {
@@ -132,6 +157,19 @@ body {
     .snackbar {
       min-height: 52px;
     }
+  }
+}
+
+@media (max-width: 767px) {
+  body:not(.auth) {
+    .main-container {
+      .content-wrapper {
+        height: 100%;
+        padding: 0;
+        overflow: scroll;
+      }
+    }
+
   }
 }
 </style>

@@ -1,16 +1,16 @@
 <template>
-  <div class="dashboardPage">
+  <div class="dashboard-page">
     <calendar></calendar>
   </div>
 </template>
 
 <script>
-import Calendar from '@/components/Calendar';
+import Calendar from '@/components/Calendar.vue';
 
 export default {
   components: {
     Calendar,
-  }
+  },
 };
 </script>
 

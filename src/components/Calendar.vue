@@ -28,7 +28,7 @@ export default {
 
     return {
       days: [],
-      today: today,
+      today,
       currentYear: today.getFullYear(),
       currentMonth: today.getMonth() + 1,
       currentDate: today.getDate(),
@@ -55,7 +55,7 @@ export default {
 
       const formattedToday = this.formattedDate(this.today);
 
-      for (let i = 0; i < 42; i++) {
+      for (let i = 0; i < 42; i += 1) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
 
@@ -80,10 +80,10 @@ export default {
 
       if (newMonth < 1) {
         this.currentMonth = 12;
-        this.currentYear--;
+        this.currentYear = this.currentYear - 1;
       } else if (newMonth > 12) {
         this.currentMonth = 1;
-        this.currentYear++;
+        this.currentYear = this.currentYear + 1;
       } else {
         this.currentMonth = newMonth;
       }
@@ -95,25 +95,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$base-orange: #f29543;
-$white: #ffffff;
-$gray: #e0e0e0;
-$gray-dark: #b1b1b1;
-
-@media screen and (min-width: 768px) {
-  .calendar-wrapper{
-    .date-num{
-      line-height: 50px;
-    }
-  }
-}
-@media screen and (max-width: 767px) {
-  .date-num{
-    line-height: 42px;
-  }
-}
-
 .calendar-wrapper {
+  overflow: hidden;
+
   h3, p {
     margin: 0;
     padding: 0;
@@ -138,6 +122,7 @@ $gray-dark: #b1b1b1;
     .header-title {
       color: #dedede;
       font-size: 18px;
+      line-height: 24px;
       margin-bottom: 0;
       text-align: center;
       width: 60%;
@@ -173,7 +158,7 @@ $gray-dark: #b1b1b1;
   }
 
   .item {
-    line-height: 50px;
+    line-height: 70px;
     float: left;
     user-select: none;
     width: 14.285%;
@@ -220,6 +205,63 @@ $gray-dark: #b1b1b1;
         z-index: 1;
       }
     }
+  }
+}
+
+@media (max-width: 767px) {
+  .calendar-wrapper {
+    .calendar-header {
+      background: #fff;
+
+      .header-title {
+        color: #4a4a4a;
+        font-size: 16px;
+      }
+
+      .previous-month,
+      .next-month {
+        color: #4a4a4a;
+
+        &:hover {
+          color: #1b1b1b;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .calendar-wrapper {
+    .date-number {
+      line-height: 70px;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .calendar-wrapper {
+    .calendar-header {
+      & > div {
+        padding: 10px 15px;
+      }
+    }
+  }
+
+  .calendar-weeks {
+    .item {
+      line-height: 60px;
+    }
+  }
+
+  .calendar-days {
+    .item {
+      line-height: 42px;
+
+      .date-number {
+        line-height: 42px;
+      }
+    }
+
   }
 }
 </style>
