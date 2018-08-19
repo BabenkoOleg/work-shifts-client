@@ -63,7 +63,7 @@ export default {
         token: this.token,
       }).then(() => {
         this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Password changed successfully!' });
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
         this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       }).finally(() => {

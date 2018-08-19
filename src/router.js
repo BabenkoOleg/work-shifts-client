@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from '@/views/Home.vue';
+import AuthPage from '@/pages/AuthPage.vue';
+import DashboardPage from '@/pages/DashboardPage.vue';
 
-import Auth from '@/views/Auth.vue';
 import SignIn from '@/components/auth/SignIn.vue';
 import ForgotPassword from '@/components/auth/ForgotPassword.vue';
 import ResetPassword from '@/components/auth/ResetPassword.vue';
@@ -13,7 +13,7 @@ import store from './store';
 Vue.use(Router);
 
 const ifNotAuthenticated = (to, from, next) => {
-  store.state.auth.currentUser ? next({ name: 'home' }) : next();
+  store.state.auth.currentUser ? next({ name: 'dashboardPage' }) : next();
 };
 
 const ifAuthenticated = (to, from, next) => {
@@ -25,14 +25,14 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home,
+      name: 'dashboardPage',
+      component: DashboardPage,
       beforeEnter: ifAuthenticated,
     },
     {
       path: '',
-      name: 'auth',
-      component: Auth,
+      name: 'authPage',
+      component: AuthPage,
       beforeEnter: ifNotAuthenticated,
       children: [
         {

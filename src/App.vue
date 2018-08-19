@@ -33,7 +33,7 @@ export default {
       this[authActionTypes.GET_CURRENT_USER]()
         .then(() => {
           if (this.$router.currentRoute.name === 'signIn') {
-            this.$router.push({ name: 'home' });
+            this.$router.push({ name: 'dashboardPage' });
           }
         })
         .catch(() => {

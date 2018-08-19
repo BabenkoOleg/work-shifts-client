@@ -2,7 +2,7 @@
   <div class="header">
     <nav class="navbar">
       <div class="navbar-brand">
-        <router-link class="navbar-item navbar-item-logo" :to="{ name: 'home' }">
+        <router-link class="navbar-item navbar-item-logo" :to="{ name: 'dashboardPage' }">
           WorkShifts | {{currentUser.business.name}}
         </router-link>
         <a role="button"
