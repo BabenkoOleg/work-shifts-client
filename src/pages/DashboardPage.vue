@@ -18,7 +18,8 @@ export default {
 
 <style lang="scss" scoped>
 .calendar {
-  width: 70%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @media (max-width: 767px) {
