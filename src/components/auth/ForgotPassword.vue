@@ -52,12 +52,12 @@ export default {
       this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({
         email: this.email,
       }).then(({ data: { message } }) => {
+        this[appActionTypes.STOP_LOADING]();
         this[snackbarActionTypes.SHOW_SUCCESS]({ message });
         this.$router.push({ name: 'signIn' });
       }).catch((error) => {
-        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-      }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
+        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       });
     },
   },

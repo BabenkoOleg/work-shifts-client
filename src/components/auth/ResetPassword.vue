@@ -62,12 +62,12 @@ export default {
         passwordConfirmation: this.passwordConfirmation,
         token: this.token,
       }).then(() => {
+        this[appActionTypes.STOP_LOADING]();
         this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Password changed successfully!' });
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
-        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-      }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
+        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       });
     },
   },

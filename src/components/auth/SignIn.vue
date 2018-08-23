@@ -73,12 +73,12 @@ export default {
         password: this.password,
         rememberMe: this.rememberMe,
       }).then(() => {
+        this[appActionTypes.STOP_LOADING]();
         this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Signed in successfully!' });
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
-        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
-      }).finally(() => {
         this[appActionTypes.STOP_LOADING]();
+        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
       });
     },
   },
