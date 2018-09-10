@@ -30,16 +30,16 @@ export default {
     };
   },
 
-  mounted() {
-    if (this.rememberedEmail) this.email = this.rememberedEmail;
-  },
-
   computed: {
     ...mapState('auth', ['rememberedEmail']),
 
     isButtonDisabled() {
       return this.email === '';
     },
+  },
+
+  mounted() {
+    if (this.rememberedEmail) this.email = this.rememberedEmail;
   },
 
   methods: {
