@@ -41,7 +41,7 @@ export default {
           }
         })
         .catch(() => {
-          const routes = ['signIn', 'forgotPassword', 'resetPassword'];
+          const routes = ['signIn', 'forgotPassword', 'resetPassword', 'invitation'];
           if (!routes.includes(this.$router.currentRoute.name)) {
             this.$router.push({ name: 'signIn' });
           }
