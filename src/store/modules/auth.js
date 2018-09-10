@@ -56,9 +56,6 @@ export default {
     [actionTypes.GET_CURRENT_USER]({ commit }) {
       return axiosInstance.get(endpoints.CURRENT_USER)
         .then(({ data }) => {
-          const c = data;
-        const df = dataFormatter;
-        debugger;
           commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
         })
         .catch((error) => {
