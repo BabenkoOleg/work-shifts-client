@@ -7,6 +7,7 @@ import DashboardPage from '@/pages/DashboardPage.vue';
 import SignIn from '@/components/auth/SignIn.vue';
 import ForgotPassword from '@/components/auth/ForgotPassword.vue';
 import ResetPassword from '@/components/auth/ResetPassword.vue';
+import Invitation from '@/components/auth/Invitation.vue';
 
 import store from '../store';
 
@@ -49,6 +50,11 @@ export default new Router({
           path: '/reset-password',
           name: 'resetPassword',
           component: ResetPassword,
+        },
+        {
+          path: '/invitation',
+          name: 'invitation',
+          component: Invitation,
         },
       ],
     },
