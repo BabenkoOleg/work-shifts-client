@@ -46,19 +46,19 @@ export default {
     };
   },
 
-  mounted() {
-    if (this.rememberedEmail) {
-      this.email = this.rememberedEmail;
-      this.rememberMe = '1';
-    }
-  },
-
   computed: {
     ...mapState('auth', ['rememberedEmail']),
 
     isButtonDisabled() {
       return this.email === '' || this.password === '';
     },
+  },
+
+  mounted() {
+    if (this.rememberedEmail) {
+      this.email = this.rememberedEmail;
+      this.rememberMe = '1';
+    }
   },
 
   methods: {
