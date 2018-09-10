@@ -8,7 +8,7 @@ import SignIn from '@/components/auth/SignIn.vue';
 import ForgotPassword from '@/components/auth/ForgotPassword.vue';
 import ResetPassword from '@/components/auth/ResetPassword.vue';
 
-import store from './store';
+import store from '../store';
 
 Vue.use(Router);
 
