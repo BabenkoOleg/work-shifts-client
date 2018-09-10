@@ -6,6 +6,8 @@ export const endpoints = {
   SIGN_OUT: '/auth/sign-out',
   CURRENT_USER: '/auth/current-user',
   PASSWORD: '/auth/password',
+  INVITED_USER: token => `/auth/invitation?token=${token}`,
+  INVITATION_CONFIRMATION: '/auth/invitation',
 };
 
 export const actionTypes = {
@@ -14,6 +16,8 @@ export const actionTypes = {
   GET_CURRENT_USER: 'GET_CURRENT_USER',
   SEND_RESET_PASSWORD_INSTRUCTIONS: 'SEND_RESET_PASSWORD_INSTRUCTIONS',
   RESET_PASSWORD: 'RESET_PASSWORD',
+  GET_INVITED_USER: 'GET_INVITED_USER',
+  SEND_INVITATION_CONFIRMATION: 'SEND_INVITATION_CONFIRMATION',
 };
 
 export const mutationTypes = {
@@ -78,6 +82,12 @@ export default {
       }).then(({ data }) => {
         commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
       });
+    },
+
+    [actionTypes.GET_INVITED_USER]({}, { token }) {
+      return axiosInstance.get(endpoints.INVITED_USER(token))
+        .then(({ data }) => Promise.resolve(dataFormatter.deserialize(data)))
+        .catch(error => Promise.reject(error));
     },
   },
 
