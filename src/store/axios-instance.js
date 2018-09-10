@@ -14,7 +14,9 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 axiosInstance.interceptors.response.use(response => response, (error) => {
-  if (error.response.status >= 500) {
+  if (error.response.status < 500) {
+    return Promise.reject(error.response.data);
+  } else {
     let errorMessage;
 
     if (process.env.NODE_ENV === 'production') {
