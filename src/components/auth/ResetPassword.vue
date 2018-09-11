@@ -52,7 +52,7 @@ export default {
 
   methods: {
     ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERROR]),
+    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
     ...mapActions('auth', [authActionTypes.RESET_PASSWORD]),
 
     resetPassword() {
@@ -67,7 +67,7 @@ export default {
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
         this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_ERROR]({ message: error.response.data.error });
+        this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
       });
     },
   },
