@@ -89,6 +89,19 @@ export default {
         .then(({ data }) => Promise.resolve(dataFormatter.deserialize(data)))
         .catch(error => Promise.reject(error));
     },
+
+    [actionTypes.SEND_INVITATION_CONFIRMATION]({ commit }, { user }) {
+      return axiosInstance.post(endpoints.INVITATION_CONFIRMATION, {
+        user: {
+          email: user.email,
+          name: user.name,
+          password: user.password,
+          password_confirmation: user.passwordConfirmation,
+        },
+      }).then(({ data }) => {
+        commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
+      });;
+    },
   },
 
   mutations: {
