@@ -94,7 +94,7 @@ export default {
       this[authActionTypes.SEND_INVITATION_CONFIRMATION]({ user: this.user })
         .then(() => {
           this[appActionTypes.STOP_LOADING]();
-          this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'xP' });
+          this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Password successfully set' });
           this.$router.push({ name: 'dashboardPage' });
         }).catch((error) => {
           this[appActionTypes.STOP_LOADING]();
