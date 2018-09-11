@@ -23,7 +23,7 @@
             <b-icon icon="account"></b-icon>
           </div>
           <hr>
-          <div class="navbar-item" @click="goToAdminPanel">
+          <div v-if="isAdmin" class="navbar-item" @click="goToAdminPanel">
             <span class="navbar-item-label">Admin Panel</span>
             <b-icon icon="account-settings-variant"></b-icon>
           </div>
@@ -54,6 +54,9 @@ export default {
 
   computed: {
     ...mapState('auth', ['currentUser']),
+    isAdmin() {
+      return this.currentUser.role === 'admin' || this.currentUser.role === 'superadmin';
+    }
   },
 
   methods: {
