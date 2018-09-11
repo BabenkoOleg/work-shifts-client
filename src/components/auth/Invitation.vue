@@ -1,17 +1,16 @@
 <template>
   <div class="auth-form">
-    <form>
-    <!-- <form @submit.prevent=""> -->
+    <form @submit.prevent="sendInvitationConfirmation">
       <b-field>
-        <b-input v-model="invitedUser.email" placeholder="Email" icon="email" disabled>
+        <b-input v-model="user.email" placeholder="Email" icon="email" disabled>
         </b-input>
       </b-field>
       <b-field>
-        <b-input v-model="invitedUser.name" placeholder="Name" icon="account">
+        <b-input v-model="user.name" placeholder="Name" icon="account">
         </b-input>
       </b-field>
       <b-field>
-        <b-input v-model="invitedUser.password"
+        <b-input v-model="user.password"
                  placeholder="Password"
                  type="password"
                  icon="lock"
@@ -19,7 +18,7 @@
         </b-input>
       </b-field>
       <b-field>
-        <b-input v-model="invitedUser.passwordConfirmation"
+        <b-input v-model="user.passwordConfirmation"
                  placeholder="Password confirmation"
                  type="password"
                  icon="lock"
@@ -47,7 +46,7 @@ import { actionTypes as authActionTypes } from '@/store/modules/auth';
 export default {
   data() {
     return {
-      invitedUser: {
+      user: {
         email: '',
         name: '',
         password: '',
@@ -58,9 +57,9 @@ export default {
 
   computed: {
     isButtonDisabled() {
-      return this.invitedUser.name === '' ||
-             this.invitedUser.password === '' ||
-             this.invitedUser.passwordConfirmation === '';
+      return this.user.name === '' ||
+             this.user.password === '' ||
+             this.user.passwordConfirmation === '';
     },
   },
 
@@ -70,22 +69,38 @@ export default {
 
   methods: {
     ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERROR]),
-    ...mapActions('auth', [authActionTypes.GET_INVITED_USER]),
+    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
+    ...mapActions('auth', [
+      authActionTypes.GET_INVITED_USER,
+      authActionTypes.SEND_INVITATION_CONFIRMATION,
+    ]),
 
     getInvitatedUser(token) {
       this[appActionTypes.START_LOADING]();
       this[authActionTypes.GET_INVITED_USER]({ token })
         .then((data) => {
-          this.invitedUser.email = data.email;
-          this.invitedUser.name = data.name;
+          this.user.email = data.email;
+          this.user.name = data.name;
           this[appActionTypes.STOP_LOADING]();
         }).catch((error) => {
           this[appActionTypes.STOP_LOADING]();
-          error.errors.forEach(message => this[snackbarActionTypes.SHOW_ERROR]({ message }));
+          this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
           this.$router.push({ name: 'signIn' });
         });
     },
+
+    sendInvitationConfirmation() {
+      this[appActionTypes.START_LOADING]();
+      this[authActionTypes.SEND_INVITATION_CONFIRMATION]({ user: this.user })
+        .then(() => {
+          this[appActionTypes.STOP_LOADING]();
+          this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'xP' });
+          this.$router.push({ name: 'dashboardPage' });
+        }).catch((error) => {
+          this[appActionTypes.STOP_LOADING]();
+          this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+        });
+    }
   },
 };
 </script>
