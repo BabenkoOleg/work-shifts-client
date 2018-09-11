@@ -5,6 +5,7 @@ export const actionTypes = {
   SHOW_SUCCESS: 'SHOW_SUCCESS',
   SHOW_WARNING: 'SHOW_WARNING',
   SHOW_ERROR: 'SHOW_ERROR',
+  SHOW_ERRORS: 'SHOW_ERRORS',
 };
 
 export default {
@@ -32,6 +33,10 @@ export default {
 
     [actionTypes.SHOW_ERROR]({ dispatch }, { message }) {
       dispatch(actionTypes.SHOW, { message, type: 'is-danger' });
+    },
+
+    [actionTypes.SHOW_ERRORS]({ dispatch }, { messages }) {
+      messages.forEach(message => dispatch(actionTypes.SHOW_ERROR, { message }));
     },
   },
 };
