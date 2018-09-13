@@ -1,4 +1,5 @@
 import axios from 'axios';
+import dataFormatter from '@/store/data-formatter';
 import { Snackbar } from 'buefy';
 
 const axiosInstance = axios.create({
@@ -15,7 +16,7 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(response => response, (error) => {
   if (error.response.status < 500) {
-    return Promise.reject(error.response.data);
+    return Promise.reject(dataFormatter.deserialize(error.response.data));
   } else {
     let errorMessage;
 
