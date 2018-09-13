@@ -14,7 +14,9 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
-axiosInstance.interceptors.response.use(response => response, (error) => {
+axiosInstance.interceptors.response.use((response) => {
+  return Promise.revolve(dataFormatter.deserialize(response.data));
+}, (error) => {
   if (error.response.status < 500) {
     return Promise.reject(dataFormatter.deserialize(error.response.data));
   } else {
