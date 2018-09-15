@@ -2,12 +2,10 @@
   <div class="auth-form">
     <form @submit.prevent="sendInvitationConfirmation">
       <b-field>
-        <b-input v-model="user.email" placeholder="Email" icon="email" disabled>
-        </b-input>
+        <b-input v-model="user.email" placeholder="Email" icon="email" disabled></b-input>
       </b-field>
       <b-field>
-        <b-input v-model="user.name" placeholder="Name" icon="account">
-        </b-input>
+        <b-input v-model="user.name" placeholder="Name" icon="account"></b-input>
       </b-field>
       <b-field>
         <b-input v-model="user.password"
@@ -40,7 +38,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { actionTypes as appActionTypes } from '@/store/modules/app';
-import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -69,7 +66,6 @@ export default {
 
   methods: {
     ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
     ...mapActions('auth', [
       authActionTypes.GET_INVITED_USER,
       authActionTypes.SEND_INVITATION_CONFIRMATION,
@@ -84,7 +80,7 @@ export default {
           this[appActionTypes.STOP_LOADING]();
         }).catch((error) => {
           this[appActionTypes.STOP_LOADING]();
-          this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+          this.$showError(error);
           this.$router.push({ name: 'signIn' });
         });
     },
@@ -94,13 +90,13 @@ export default {
       this[authActionTypes.SEND_INVITATION_CONFIRMATION]({ user: this.user })
         .then(() => {
           this[appActionTypes.STOP_LOADING]();
-          this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Password successfully set' });
+          this.$showSuccess('Password successfully set!');
           this.$router.push({ name: 'dashboardPage' });
         }).catch((error) => {
           this[appActionTypes.STOP_LOADING]();
-          this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+          this.$showError(error);
         });
-    }
+    },
   },
 };
 </script>
