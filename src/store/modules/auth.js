@@ -1,4 +1,3 @@
-import dataFormatter from '@/store/data-formatter';
 import axiosInstance from '@/store/axios-instance';
 
 export const endpoints = {
@@ -38,17 +37,15 @@ export default {
   actions: {
     [actionTypes.SIGN_IN]({ commit }, { email, password, rememberMe }) {
       return axiosInstance.post(endpoints.SIGN_IN, {
-        user: {
-          email, password, remember_me: rememberMe,
-        },
-      }).then(({ data }) => {
-        const currentUser = dataFormatter.deserialize(data);
+        user: { email, password, remember_me: rememberMe },
+      }).then((currentUser) => {
         commit(mutationTypes.SET_CURRENT_USER, currentUser);
         if (rememberMe === '1') {
           commit(mutationTypes.SET_REMEMBERED_EMAIL, email);
         } else {
           commit(mutationTypes.CLEAR_REMEMBERED_EMAIL);
         }
+        return Promise.resolve('Signed in successfully');
       });
     },
 
@@ -59,9 +56,7 @@ export default {
 
     [actionTypes.GET_CURRENT_USER]({ commit }) {
       return axiosInstance.get(endpoints.CURRENT_USER)
-        .then(({ data }) => {
-          commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
-        })
+        .then(currentUser => commit(mutationTypes.SET_CURRENT_USER, currentUser))
         .catch((error) => {
           commit(mutationTypes.CLEAR_CURRENT_USER);
           return Promise.reject(error);
@@ -79,14 +74,12 @@ export default {
           password,
           password_confirmation: passwordConfirmation,
         },
-      }).then(({ data }) => {
-        commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
-      });
+      }).then(currentUser => commit(mutationTypes.SET_CURRENT_USER, currentUser));
     },
 
     [actionTypes.GET_INVITED_USER]({}, { token }) {
       return axiosInstance.get(endpoints.INVITED_USER(token))
-        .then(({ data }) => Promise.resolve(dataFormatter.deserialize(data)))
+        .then(currentUser => Promise.resolve(currentUser))
         .catch(error => Promise.reject(error));
     },
 
@@ -98,9 +91,7 @@ export default {
           password: user.password,
           password_confirmation: user.passwordConfirmation,
         },
-      }).then(({ data }) => {
-        commit(mutationTypes.SET_CURRENT_USER, dataFormatter.deserialize(data));
-      });;
+      }).then(currentUser => commit(mutationTypes.SET_CURRENT_USER, currentUser));
     },
   },
 
