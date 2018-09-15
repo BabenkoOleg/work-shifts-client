@@ -31,7 +31,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -50,21 +49,20 @@ export default {
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
     ...mapActions('auth', [authActionTypes.RESET_PASSWORD]),
 
     resetPassword() {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.RESET_PASSWORD]({
         password: this.password,
         passwordConfirmation: this.passwordConfirmation,
         token: this.token,
       }).then(() => {
-        this[appActionTypes.STOP_LOADING]();
+        this.$stopLoading();
         this.$showSuccess('Password changed successfully!');
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
-        this[appActionTypes.STOP_LOADING]();
+        this.$stopLoading();
         this.$showError(error);
       });
     },

@@ -19,7 +19,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -42,19 +41,18 @@ export default {
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
     ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
 
     sendResetPasswordInstructions() {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({
         email: this.email,
       }).then(() => {
-        this[appActionTypes.STOP_LOADING]();
+        this.$stopLoading();
         this.$showSuccess('You will receive instructions in a few minutes');
         this.$router.push({ name: 'signIn' });
       }).catch((error) => {
-        this[appActionTypes.STOP_LOADING]();
+        this.$stopLoading();
         this.$showError(error);
       });
     },

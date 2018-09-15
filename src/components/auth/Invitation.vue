@@ -37,7 +37,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -65,35 +64,34 @@ export default {
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
     ...mapActions('auth', [
       authActionTypes.GET_INVITED_USER,
       authActionTypes.SEND_INVITATION_CONFIRMATION,
     ]),
 
     getInvitatedUser(token) {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.GET_INVITED_USER]({ token })
         .then((data) => {
           this.user.email = data.email;
           this.user.name = data.name;
-          this[appActionTypes.STOP_LOADING]();
+          this.$stopLoading();
         }).catch((error) => {
-          this[appActionTypes.STOP_LOADING]();
+          this.$stopLoading();
           this.$showError(error);
           this.$router.push({ name: 'signIn' });
         });
     },
 
     sendInvitationConfirmation() {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.SEND_INVITATION_CONFIRMATION]({ user: this.user })
         .then(() => {
-          this[appActionTypes.STOP_LOADING]();
+          this.$stopLoading();
           this.$showSuccess('Password successfully set!');
           this.$router.push({ name: 'dashboardPage' });
         }).catch((error) => {
-          this[appActionTypes.STOP_LOADING]();
+          this.$stopLoading();
           this.$showError(error);
         });
     },
