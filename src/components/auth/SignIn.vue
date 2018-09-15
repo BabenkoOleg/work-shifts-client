@@ -33,8 +33,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
-import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -62,23 +60,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
     ...mapActions('auth', [authActionTypes.SIGN_IN]),
 
     signIn() {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.SIGN_IN]({
         email: this.email,
         password: this.password,
         rememberMe: this.rememberMe,
       }).then(() => {
-        this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Signed in successfully!' });
+        this.$stopLoading();
+        this.$showSuccess('Signed in successfully!');
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
-        this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+        this.$stopLoading();
+        this.$showError(error.messages);
       });
     },
   },

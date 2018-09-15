@@ -131,6 +131,10 @@ body {
 }
 
 .notices {
+  &.is-top {
+    padding: 20px;
+  }
+
   .snackbar {
     font-size: 0.95em;
     font-weight: bold;
@@ -161,6 +165,12 @@ body {
 }
 
 @media (max-width: 767px) {
+  .notices {
+    &.is-top {
+      padding: 0;
+    }
+  }
+
   body:not(.auth) {
     .main-container {
       .content-wrapper {
@@ -169,7 +179,6 @@ body {
         overflow: scroll;
       }
     }
-
   }
 }
 </style>

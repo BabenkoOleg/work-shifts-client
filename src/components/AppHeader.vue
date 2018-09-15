@@ -56,7 +56,7 @@ export default {
     ...mapState('auth', ['currentUser']),
     isAdmin() {
       return this.currentUser.role === 'admin' || this.currentUser.role === 'superadmin';
-    }
+    },
   },
 
   methods: {
@@ -71,9 +71,12 @@ export default {
     },
 
     signOut() {
-      this[authActionTypes.SIGN_OUT]().then(() => {
-        this.$router.push({ name: 'signIn' });
-      });
+      this[authActionTypes.SIGN_OUT]()
+        .then(() => {
+          this.$showSuccess('Signed out successfully');
+          this.$router.push({ name: 'signIn' });
+        })
+        .catch(error => this.$showError(error));
     },
   },
 };

@@ -19,8 +19,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { actionTypes as appActionTypes } from '@/store/modules/app';
-import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -43,21 +41,19 @@ export default {
   },
 
   methods: {
-    ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
     ...mapActions('auth', [authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]),
 
     sendResetPasswordInstructions() {
-      this[appActionTypes.START_LOADING]();
+      this.$startLoading();
       this[authActionTypes.SEND_RESET_PASSWORD_INSTRUCTIONS]({
         email: this.email,
-      }).then(({ data: { message } }) => {
-        this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_SUCCESS]({ message });
+      }).then(() => {
+        this.$stopLoading();
+        this.$showSuccess('You will receive instructions in a few minutes');
         this.$router.push({ name: 'signIn' });
       }).catch((error) => {
-        this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+        this.$stopLoading();
+        this.$showError(error);
       });
     },
   },
