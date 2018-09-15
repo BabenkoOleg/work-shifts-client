@@ -32,7 +32,6 @@
 <script>
 import { mapActions } from 'vuex';
 import { actionTypes as appActionTypes } from '@/store/modules/app';
-import { actionTypes as snackbarActionTypes } from '@/store/modules/snackbar';
 import { actionTypes as authActionTypes } from '@/store/modules/auth';
 
 export default {
@@ -52,7 +51,6 @@ export default {
 
   methods: {
     ...mapActions('app', [appActionTypes.START_LOADING, appActionTypes.STOP_LOADING]),
-    ...mapActions('snackbar', [snackbarActionTypes.SHOW_SUCCESS, snackbarActionTypes.SHOW_ERRORS]),
     ...mapActions('auth', [authActionTypes.RESET_PASSWORD]),
 
     resetPassword() {
@@ -63,11 +61,11 @@ export default {
         token: this.token,
       }).then(() => {
         this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_SUCCESS]({ message: 'Password changed successfully!' });
+        this.$showSuccess('Password changed successfully!');
         this.$router.push({ name: 'dashboardPage' });
       }).catch((error) => {
         this[appActionTypes.STOP_LOADING]();
-        this[snackbarActionTypes.SHOW_ERRORS]({ messages: error.errors });
+        this.$showError(error);
       });
     },
   },
