@@ -14,7 +14,9 @@ export default {
     };
 
     Vue.prototype.$showPopup = (type, subject) => {
-      if (Array.isArray(subject)) {
+      if (process.env.NODE_ENV === 'development' && subject.name && subject.message) {
+        Vue.prototype.$openSnackbar(type, `${subject.name}: ${subject.message}`);
+      } else if (Array.isArray(subject)) {
         subject.forEach(message => Vue.prototype.$openSnackbar(type, message));
       } else if (Array.isArray(subject.messages)) {
         subject.messages.forEach(message => Vue.prototype.$openSnackbar(type, message));
