@@ -91,7 +91,7 @@ export default {
           password: user.password,
           password_confirmation: user.passwordConfirmation,
         },
-      }).then(currentUser => commit(mutationTypes.SET_CURRENT_USER, currentUser));
+      });
     },
   },
 
