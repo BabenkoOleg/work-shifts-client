@@ -65,6 +65,7 @@ export default {
 
   methods: {
     ...mapActions('auth', [
+      authActionTypes.SIGN_IN,
       authActionTypes.GET_INVITED_USER,
       authActionTypes.SEND_INVITATION_CONFIRMATION,
     ]),
@@ -89,11 +90,27 @@ export default {
         .then(() => {
           this.$stopLoading();
           this.$showSuccess('Password successfully set!');
-          this.$router.push({ name: 'dashboardPage' });
+          this.signIn();
         }).catch((error) => {
           this.$stopLoading();
           this.$showError(error);
         });
+    },
+
+    signIn() {
+      this.$startLoading();
+      this[authActionTypes.SIGN_IN]({
+        email: this.user.email,
+        password: this.user.password,
+        rememberMe: false,
+      }).then(() => {
+        this.$stopLoading();
+        this.$showSuccess('Signed in successfully!');
+        this.$router.push({ name: 'dashboardPage' });
+      }).catch((error) => {
+        this.$stopLoading();
+        this.$showError(error);
+      });
     },
   },
 };
